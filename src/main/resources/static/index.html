@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <base href="/"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="container unauthenticated">
+    		<h2>User Login</h2>
+		</div>
+		<div id="userLogin" class="container unauthenticated">
+    		<span><strong>LogIn With Google Account:</strong></span> <a href="/login">click here</a>
+		</div>
+		<div class="container authenticated" style="display:none">
+    		<h3>User Profile</h3>
+		</div><br/>
+		<div class="container authenticated" style="display:none">
+    		Logged in as: <strong id="user"></strong>
+		</div>
+		<div class="container authenticated" style="display:none">
+    		User Image: <img id="userPic" src="">
+		</div><br/>
+		<div>
+    		<button onClick="logout()" class="btn btn-primary">Logout</button>
+ 		</div>
+	</div>
+	
+	<script type="text/javascript">
+    	$.get("/user", function(data) {
+    		$("#user").html(data.userAuthentication.details.name)
+        	$("#userPic").attr("src", data.userAuthentication.details.picture)
+        	$(".unauthenticated").hide()
+        	$(".authenticated").show()
+    	}); 
+    	
+    	var logout = function() {
+    	    $.post("/logout", function() {
+    	        $("#userLogin").html('');
+    	        $(".unauthenticated").show();
+    	        $(".authenticated").hide();
+    	    })
+    	    return true;
+    	}
+	</script>
+</body>
+</html>
